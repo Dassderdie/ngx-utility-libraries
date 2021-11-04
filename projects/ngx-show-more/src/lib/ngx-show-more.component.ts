@@ -12,6 +12,7 @@ import {
     ElementRef,
     Input,
     OnChanges,
+    OnDestroy,
     ViewChild,
 } from '@angular/core';
 
@@ -24,7 +25,9 @@ import {
  * Automatically determents wether the content passed via ng-content is larger than the provided defaultHeight
  * and only shows a part that is at max {{defaultHeight}} high with the option to show all
  */
-export class NgxShowMoreComponent implements OnChanges, AfterViewInit {
+export class NgxShowMoreComponent
+    implements OnChanges, AfterViewInit, OnDestroy
+{
     /**
      * The maximum height that is shown by default without having to click on the "Show more"-button
      */
@@ -33,8 +36,20 @@ export class NgxShowMoreComponent implements OnChanges, AfterViewInit {
      * The classes applied to the "Show more"- and "Show less"-buttons
      */
     @Input() btnClasses!: string;
+    /**
+     * If the scrollHeight of the content changes we could want to change wether the "Show more"-button is shown or not
+     * Currently there seems to be no way to observe the scrollHeight of the content (https://stackoverflow.com/questions/44428370/detect-scrollheight-change-with-mutationobserver).
+     * Therefore you can specify here which strategies you want to use.
+     */
+    @Input()
+    heightChangeObservationStrategies: HeightChangeObservationStrategies = {
+        polling: false,
+        resizeObserver: true,
+        mutationObserver: true,
+    };
 
-    @ViewChild('wrapper') wrapper?: ElementRef<HTMLElement>;
+    @ViewChild('wrapper') wrapper?: ElementRef<HTMLDivElement>;
+    @ViewChild('contentWrapper') contentWrapper?: ElementRef<HTMLDivElement>;
     private player?: AnimationPlayer;
 
     constructor(
@@ -45,6 +60,9 @@ export class NgxShowMoreComponent implements OnChanges, AfterViewInit {
     public fits = true;
     public showingMore = false;
 
+    private resizeObserver?: ResizeObserver;
+    private mutationObserver?: MutationObserver;
+
     ngOnChanges() {
         this.updateState();
     }
@@ -52,9 +70,33 @@ export class NgxShowMoreComponent implements OnChanges, AfterViewInit {
     ngAfterViewInit() {
         // the ng-content makes up for the height of the wrapper -> wait until it is loaded
         setTimeout(() => this.updateState(), 0);
-        // TODO: Investigate using ResizeObserver
-        // check every second (just for error correction)
-        setInterval(() => this.updateState(), 1000);
+        // TODO:
+        // observe the height of the content and update the showingMore-state whenever it changes
+        // therefore we make use of up to three different strategies to detect changes in the scrollHeight
+        if (this.heightChangeObservationStrategies.polling) {
+            setInterval(
+                () => this.updateState(),
+                this.heightChangeObservationStrategies.polling
+            );
+        }
+        if (this.heightChangeObservationStrategies.resizeObserver) {
+            this.resizeObserver = new ResizeObserver(() => {
+                this.updateState();
+            });
+            this.resizeObserver.observe(this.contentWrapper!.nativeElement);
+        }
+        if (this.heightChangeObservationStrategies.mutationObserver) {
+            this.mutationObserver = new MutationObserver(() => {
+                this.updateState();
+            });
+            this.mutationObserver.observe(this.contentWrapper!.nativeElement, {
+                attributes: true,
+                attributeOldValue: false,
+                characterData: true,
+                childList: true,
+                subtree: true,
+            });
+        }
     }
 
     public toggleShowMore() {
@@ -105,4 +147,26 @@ export class NgxShowMoreComponent implements OnChanges, AfterViewInit {
                 this.wrapper.nativeElement.clientHeight;
         this.changeDetectorRef.markForCheck();
     }
+
+    ngOnDestroy() {
+        this.resizeObserver?.disconnect();
+        this.mutationObserver?.disconnect();
+    }
+}
+
+interface HeightChangeObservationStrategies {
+    /**
+     * Check every {{ pollingIntervall }} ms if the scrollHeight of the content has changed
+     * a number > 0
+     */
+    polling: false | number;
+    /**
+     * Observe wether the content dimensions have been resized (e.g. window or an outer container got resized)
+     */
+    resizeObserver: boolean;
+    /**
+     * Observe wether the content or its children got mutated (attributes changed, new element added, element removed etc.)
+     * Can be unperformant if the content is large
+     */
+    mutationObserver: boolean;
 }

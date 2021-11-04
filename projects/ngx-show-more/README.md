@@ -2,6 +2,9 @@
 
 [![npm](https://img.shields.io/npm/v/ngx-show-more/latest.svg)](https://www.npmjs.com/package/ngx-show-more)
 
+-   Unopinionated
+-   Works with `ChangeDetectionStrategy.OnPush`
+
 ## Install
 
 Make sure you are using at least `angular@12.0.0`.

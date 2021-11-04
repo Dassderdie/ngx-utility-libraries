@@ -3,7 +3,9 @@
     [style.max-height]="defaultHeight"
     style="overflow-y: hidden; position: relative"
 >
-    <ng-content></ng-content>
+    <div #contentWrapper>
+        <ng-content></ng-content>
+    </div>
     <button
         *ngIf="!fits"
         [class]="btnClasses"
