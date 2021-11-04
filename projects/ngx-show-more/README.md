@@ -1,5 +1,40 @@
 # NgxShowMore
 
+[![npm](https://img.shields.io/npm/v/ngx-show-more/latest.svg)](https://www.npmjs.com/package/ngx-show-more)
+
+## Install
+
+Install ngx-show-more from npm:
+
+```
+npm install ngx-show-more --save
+```
+
+Add to your NgModule imports:
+
+```ts
+import { NgxShowMoreModule } from 'ngx-show-more';
+
+@NgModule({
+  ...
+  imports: [NgxShowMoreModule,...]
+  ...
+})
+```
+
+Add the component to your template:
+
+```html
+<p>Some HTML code.</p>
+
+<ngx-show-more defaultHeight="40px">
+    <h2>Title<h2>
+    <p>
+        Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
+    </p>
+</ngx-show-more>
+```
+
 ## Code scaffolding
 
 Run `ng generate component component-name --project ngx-show-more` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module --project ngx-show-more`.

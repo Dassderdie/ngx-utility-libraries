@@ -45,7 +45,7 @@ export class NgxShowMoreComponent implements OnChanges, AfterViewInit {
     ngAfterViewInit() {
         // the ng-content makes up for the height of the wrapper -> wait until it is loaded
         setTimeout(() => this.updateState(), 0);
-        // TODO: make sure this isn't necessary
+        // TODO: Investigate using ResizeObserver
         // check every second (just for error correction)
         setInterval(() => this.updateState(), 1000);
     }
