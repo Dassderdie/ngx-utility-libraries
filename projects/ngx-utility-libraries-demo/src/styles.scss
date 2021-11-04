@@ -1,0 +1,10 @@
+@import '~bootstrap/scss/bootstrap.scss';
+
+.showMoreButton {
+    background: rgba(248, 249, 250, 0.85);
+    @extend .btn;
+    @extend .btn-sm;
+    @extend .btn-light;
+    @extend .m-1;
+    @extend .fw-bold;
+}

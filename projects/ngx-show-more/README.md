@@ -4,8 +4,7 @@
 
 ## Install
 
-Make sure you are using at least `angular@12.0.0` and `bootstrap@5.0.0`.
-(Note: Bootstrap is only used for styling the `Show more`-button. It is possible to drop this peerDependency and make this package stylistic unopinionated. Let me know if you have a need for it.)
+Make sure you are using at least `angular@12.0.0`.
 
 Install ngx-show-more from npm:
 
@@ -30,10 +29,18 @@ Add the component to your template:
 ```html
 <p>Some HTML code.</p>
 
-<ngx-show-more defaultHeight="40px">
-    <h2>Title<h2>
+<ngx-show-more defaultHeight="40px" btnClasses="btn btn-sm btn-light m-1">
+    <h2>Title</h2>
     <p>
-        Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
+        Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy
+        eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam
+        voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet
+        clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit
+        amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
+        nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat,
+        sed diam voluptua. At vero eos et accusam et justo duo dolores et ea
+        rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem
+        ipsum dolor sit amet.
     </p>
 </ngx-show-more>
 ```

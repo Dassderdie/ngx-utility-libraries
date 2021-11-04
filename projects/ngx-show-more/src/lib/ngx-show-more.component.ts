@@ -16,7 +16,7 @@ import {
 } from '@angular/core';
 
 @Component({
-    selector: 'lib-ngx-show-more',
+    selector: 'ngx-show-more',
     templateUrl: './ngx-show-more.component.html',
     styleUrls: ['./ngx-show-more.component.scss'],
 })
@@ -25,7 +25,14 @@ import {
  * and only shows a part that is at max {{defaultHeight}} high with the option to show all
  */
 export class NgxShowMoreComponent implements OnChanges, AfterViewInit {
+    /**
+     * The maximum height that is shown by default without having to click on the "Show more"-button
+     */
     @Input() defaultHeight!: string;
+    /**
+     * The classes applied to the "Show more"- and "Show less"-buttons
+     */
+    @Input() btnClasses!: string;
 
     @ViewChild('wrapper') wrapper?: ElementRef<HTMLElement>;
     private player?: AnimationPlayer;

@@ -1,0 +1,18 @@
+<h2>ngx-show-more</h2>
+
+<div
+    *ngFor="let demoCard of demoData"
+    class="card mb-3"
+    style="max-width: 300px"
+>
+    <div class="card-header">{{ demoCard.title }}</div>
+    <ngx-show-more
+        class="card-body"
+        defaultHeight="80px"
+        btnClasses="showMoreButton"
+    >
+        <div [innerHTML]="demoCard.body$ | async"></div>
+    </ngx-show-more>
+</div>
+
+<br />
