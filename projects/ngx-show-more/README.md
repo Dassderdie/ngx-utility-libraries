@@ -4,6 +4,9 @@
 
 ## Install
 
+Make sure you are using at least `angular@12.0.0` and `bootstrap@5.0.0`.
+(Note: Bootstrap is only used for styling the `Show more`-button. It is possible to drop this peerDependency and make this package stylistic unopinionated. Let me know if you have a need for it.)
+
 Install ngx-show-more from npm:
 
 ```
