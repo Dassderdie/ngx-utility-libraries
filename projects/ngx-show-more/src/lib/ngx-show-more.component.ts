@@ -30,6 +30,7 @@ export class NgxShowMoreComponent
 {
     /**
      * The maximum height that is shown by default without having to click on the "Show more"-button
+     * You can use any valid css value like '100px', '100em', '10vh'
      */
     @Input() defaultHeight!: string;
     /**
@@ -37,7 +38,7 @@ export class NgxShowMoreComponent
      */
     @Input() btnClasses!: string;
     /**
-     * If the scrollHeight of the content changes we could want to change wether the "Show more"-button is shown or not
+     * If the scrollHeight of the content changes, we could want to change wether the "Show more"-button is shown or not
      * Currently there seems to be no way to observe the scrollHeight of the content (https://stackoverflow.com/questions/44428370/detect-scrollheight-change-with-mutationobserver).
      * Therefore you can specify here which strategies you want to use.
      */
@@ -57,7 +58,7 @@ export class NgxShowMoreComponent
         private readonly changeDetectorRef: ChangeDetectorRef
     ) {}
 
-    public fits = true;
+    public fitsIn = true;
     public showingMore = false;
 
     private resizeObserver?: ResizeObserver;
@@ -118,9 +119,11 @@ export class NgxShowMoreComponent
                 animate(
                     '0.5s ease',
                     style({
+                        // TODO: `min(defaultHeight, scrollHeight)` would be better, but because defaultHeight doesn't have to be in px, this function is not trivial
                         height: this.defaultHeight,
                     })
                 ),
+                style({ height: '', 'max-height': this.defaultHeight }),
             ]);
         }
     }
@@ -138,13 +141,12 @@ export class NgxShowMoreComponent
     }
 
     private updateState() {
-        if (!this.wrapper) {
+        if (!this.wrapper || this.showingMore) {
             return;
         }
-        this.fits =
-            !this.showingMore &&
+        this.fitsIn =
             this.wrapper.nativeElement.scrollHeight <=
-                this.wrapper.nativeElement.clientHeight;
+            this.wrapper.nativeElement.clientHeight;
         this.changeDetectorRef.markForCheck();
     }
 
@@ -156,17 +158,18 @@ export class NgxShowMoreComponent
 
 interface HeightChangeObservationStrategies {
     /**
-     * Check every {{ pollingIntervall }} ms if the scrollHeight of the content has changed
-     * a number > 0
-     */
-    polling: false | number;
-    /**
      * Observe wether the content dimensions have been resized (e.g. window or an outer container got resized)
      */
     resizeObserver: boolean;
     /**
      * Observe wether the content or its children got mutated (attributes changed, new element added, element removed etc.)
-     * Can be unperformant if the content is large
+     * Can be non-performant if the content is large
      */
     mutationObserver: boolean;
+    /**
+     * Check every {{ pollingIntervall }} ms if the scrollHeight of the content has changed
+     * {{ pollingIntervall }} is the specified number that must be > 0
+     * disabled if the value is false
+     */
+    polling: false | number;
 }
