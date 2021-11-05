@@ -4,7 +4,7 @@
     "scripts": {
         "ng": "ng",
         "start": "ng serve",
-        "deploy": "ng build ngx-utility-libraries-demo",
+        "deploy": "ng build ngx-show-more && ng build ngx-utility-libraries-demo",
         "build": "ng build",
         "watch": "ng build --watch --configuration development",
         "test": "ng test",
