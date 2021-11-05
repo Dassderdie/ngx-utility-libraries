@@ -1,8 +1,13 @@
 # NgxShowMore
 
-[![npm](https://img.shields.io/npm/v/ngx-show-more/latest.svg)](https://www.npmjs.com/package/ngx-show-more)
+[![npm](https://img.shields.io/npm/v/ngx-show-more/latest.svg)](https://www.npmjs.com/package/ngx-show-more) [![Netlify Status](https://api.netlify.com/api/v1/badges/11932620-4735-4ea2-ba4d-e544ae9cfeb6/deploy-status)](https://app.netlify.com/sites/ngx-utility-libraries-demo/deploys)
 
--   Does not only support text, but arbitrary HTML and Angular components that dynamically change in height
+[Try out the DEMO](https://ngx-utility-libraries-demo.netlify.app/#ngx-show-more)
+
+An Angular component that truncates arbitrary provided content if it is too high, but enables the user to expand it completely.
+Other keywords:
+
+-   Does not only support text, but arbitrary HTML and Angular components that are even allowed to dynamically change in height
 -   Unopinionated
 -   Works with `ChangeDetectionStrategy.OnPush`
 -   i18n support: to be done
@@ -29,7 +34,8 @@ import { NgxShowMoreModule } from 'ngx-show-more';
 })
 ```
 
-Add the component to your template (this example uses [bootstrap](https://getbootstrap.com/) classes in `btnClasses`, for these to work you would have to import bootstrap. Instead you can also use your own css-framework or create your own css-class):
+Add the component to your template.
+This example uses [bootstrap](https://getbootstrap.com/) classes in `btnClasses`, for these to work you would have to import bootstrap. Instead you can also use your own CSS-framework or create your own CSS-class.
 
 ```html
 <p>Some HTML code.</p>
