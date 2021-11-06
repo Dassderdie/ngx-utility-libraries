@@ -10,7 +10,7 @@ Other keywords:
 -   Does not only support text, but arbitrary HTML and Angular components that are even allowed to dynamically change in height
 -   Unopinionated
 -   Works with `ChangeDetectionStrategy.OnPush`
--   i18n support: to be done
+-   i18n support
 
 ## Install
 
@@ -64,7 +64,7 @@ This example uses [bootstrap](https://getbootstrap.com/) classes in `btnClasses`
 | Input                             | Description                                                                                                                                                                                                                                                                                                                                                                        | Example value                                      | default value                                                        |
 | --------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------- | -------------------------------------------------------------------- |
 | defaultHeight                     | The maximum height that is shown by default without having to click on the "Show more"-button.                                                                                                                                                                                                                                                                                     | any valid css value like '100px', '100em', '10vh'. | has to be specified                                                  |
-| btnClasses                        | The classes applied to the "Show more"- and "Show less"-buttons                                                                                                                                                                                                                                                                                                                    | any valid css class like 'ngxShowMoreButton'.      | has to be specified                                                  |
+| btnClasses                        | The classes applied to the "Show more"- and "Show less"-buttons                                                                                                                                                                                                                                                                                                                    | any valid css class like 'ngxShowMoreButton'.      | `''`                                                                 |
 | heightChangeObservationStrategies | If the scrollHeight of the content changes, we could want to change wether the "Show more"-button is shown or not. Currently there [seems to be no way to observe the scrollHeight of the content](https://stackoverflow.com/questions/44428370/detect-scrollheight-change-with-mutationobserver). Therefore you can specify here which combination of strategies you want to use. | any valid css class like 'ngxShowMoreButton'.      | `{ polling: false, resizeObserver: true, mutationObserver: true, } ` |
 
 ```ts
@@ -86,6 +86,39 @@ interface HeightChangeObservationStrategies {
     polling: false | number;
 }
 ```
+
+### Default values
+
+To change the default values of e.g. the `btnClasses` or `heightChangeObservationStrategies`, you have to modify the `defaultOptions` object exported by the library, ideally before any NGXShowMoreComponent is initialized.
+
+You can do this in the first Module you import the NgxShowMoreModule.
+
+```ts
+import {
+    defaultOptions as ngxShowMoreDefaultOptions,
+    NgxShowMoreModule,
+} from 'ngx-show-more';
+
+ngxShowMoreDefaultOptions = {
+    ...ngxShowMoreDefaultOptions,
+    btnClasses: 'btn btn-sm btn-light m-1 fw-bold bg-light',
+};
+
+@NgModule({
+    declarations: [ShowMoreDemoComponent],
+    imports: [CommonModule, NgxShowMoreModule],
+    exports: [ShowMoreDemoComponent],
+})
+export class ShowMoreDemoModule {}
+```
+
+If you import the NgxShowMoreModule multiple modules or lazy loaded modules, you could create a function `setNgxShowMoreDefaultOptions()` that sets the default options to your liking and call this function in all the Modules.
+
+#### I18n
+
+The `defaultOptions` also have a `translation` property that sets the translations for the "Show more"- and "Show less"-button texts.
+
+Be aware that this library isn't designed to support changing the translations in the runtime after the Component has been initialized. (Not relevant if you use [Angulars own i18n solution](https://angular.io/guide/i18n-overview), but a limitation if you use e.g. [ngx-translate](https://github.com/ngx-translate/core) )
 
 ## Code scaffolding
 

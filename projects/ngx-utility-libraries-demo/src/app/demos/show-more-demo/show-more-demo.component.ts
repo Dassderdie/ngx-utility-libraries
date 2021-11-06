@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { interval, merge, of } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -9,7 +9,7 @@ import { map } from 'rxjs/operators';
     styleUrls: ['./show-more-demo.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ShowMoreDemoComponent implements OnInit {
+export class ShowMoreDemoComponent {
     public demoData = [
         {
             title: 'Higher than defaultHeight',
@@ -32,8 +32,6 @@ export class ShowMoreDemoComponent implements OnInit {
     ];
 
     constructor(private readonly domSanitizer: DomSanitizer) {}
-
-    ngOnInit(): void {}
 }
 
 const placeholderBody = `<div class="placeholder-glow">

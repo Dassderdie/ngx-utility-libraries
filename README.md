@@ -4,3 +4,7 @@ A collection of libraries for Angular projects.
 
 1. [ngx-show-more](projects/ngx-show-more/README.md)
    An Angular component that truncates arbitrary provided content if it is too high, but enables the user to expand it completely.
+
+## Structure
+
+In the ["projects" folder](projects) you can find all the libraries listed above. The [ngx-utility-libraries-demo folder](projects/ngx-utility-libraries-demo) contains the demo application for all the libraries that is deployed as the project website.

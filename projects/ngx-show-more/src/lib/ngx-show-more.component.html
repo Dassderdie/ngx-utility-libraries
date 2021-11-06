@@ -12,6 +12,10 @@
         style="position: absolute; right: 0; bottom: 0"
         (click)="toggleShowMore()"
     >
-        {{ showingMore ? 'Show less' : 'Show more' }}
+        {{
+            showingMore
+                ? defaultOptions.translations.showLess
+                : defaultOptions.translations.showMore
+        }}
     </button>
 </div>

@@ -15,6 +15,7 @@ import {
     OnDestroy,
     ViewChild,
 } from '@angular/core';
+import { defaultOptions } from './default-options';
 
 @Component({
     selector: 'ngx-show-more',
@@ -36,18 +37,15 @@ export class NgxShowMoreComponent
     /**
      * The classes applied to the "Show more"- and "Show less"-buttons
      */
-    @Input() btnClasses!: string;
+    @Input() btnClasses = defaultOptions.btnClasses;
     /**
      * If the scrollHeight of the content changes, we could want to change wether the "Show more"-button is shown or not
      * Currently there seems to be no way to observe the scrollHeight of the content (https://stackoverflow.com/questions/44428370/detect-scrollheight-change-with-mutationobserver).
      * Therefore you can specify here which strategies you want to use.
      */
     @Input()
-    heightChangeObservationStrategies: HeightChangeObservationStrategies = {
-        polling: false,
-        resizeObserver: true,
-        mutationObserver: true,
-    };
+    heightChangeObservationStrategies =
+        defaultOptions.heightChangeObservationStrategies;
 
     @ViewChild('wrapper') wrapper?: ElementRef<HTMLDivElement>;
     @ViewChild('contentWrapper') contentWrapper?: ElementRef<HTMLDivElement>;
@@ -60,6 +58,10 @@ export class NgxShowMoreComponent
 
     public fitsIn = true;
     public showingMore = false;
+    /**
+     * To use it in the template
+     */
+    public readonly defaultOptions = defaultOptions;
 
     private resizeObserver?: ResizeObserver;
     private mutationObserver?: MutationObserver;
@@ -154,22 +156,4 @@ export class NgxShowMoreComponent
         this.resizeObserver?.disconnect();
         this.mutationObserver?.disconnect();
     }
-}
-
-interface HeightChangeObservationStrategies {
-    /**
-     * Observe wether the content dimensions have been resized (e.g. window or an outer container got resized)
-     */
-    resizeObserver: boolean;
-    /**
-     * Observe wether the content or its children got mutated (attributes changed, new element added, element removed etc.)
-     * Can be non-performant if the content is large
-     */
-    mutationObserver: boolean;
-    /**
-     * Check every {{ pollingIntervall }} ms if the scrollHeight of the content has changed
-     * {{ pollingIntervall }} is the specified number that must be > 0
-     * disabled if the value is false
-     */
-    polling: false | number;
 }
