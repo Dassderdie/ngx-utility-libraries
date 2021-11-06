@@ -112,7 +112,7 @@ ngxShowMoreDefaultOptions = {
 export class ShowMoreDemoModule {}
 ```
 
-If you import the NgxShowMoreModule multiple modules or lazy loaded modules, you could create a function `setNgxShowMoreDefaultOptions()` that sets the default options to your liking and call this function in all the Modules.
+If you import the `NgxShowMoreModule` in multiple modules, you could create a function `setNgxShowMoreDefaultOptions()` that sets the default options to your liking and call this function in all the Modules.
 
 #### I18n
 
