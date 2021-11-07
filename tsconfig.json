@@ -15,6 +15,10 @@
             "ngx-show-more": [
                 "dist/ngx-show-more/ngx-show-more",
                 "dist/ngx-show-more"
+            ],
+            "ngx-track-by-property": [
+                "dist/ngx-track-by-property/ngx-track-by-property",
+                "dist/ngx-track-by-property"
             ]
         },
         "experimentalDecorators": true,
@@ -22,7 +26,10 @@
         "importHelpers": true,
         "target": "es2017",
         "module": "es2020",
-        "lib": ["es2018", "dom"]
+        "lib": [
+            "es2018",
+            "dom"
+        ]
     },
     "angularCompilerOptions": {
         "enableI18nLegacyMessageIdFormat": false,
