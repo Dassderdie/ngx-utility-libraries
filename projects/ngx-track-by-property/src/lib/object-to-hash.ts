@@ -3,7 +3,7 @@ import { hashString } from './hash-string';
 /**
  * @returns a deterministic string representation of all objects, that are deepEqual (by value) to each other
  */
-export function objectToHash(anObject: any): string {
+export function objectToHash(anObject: Record<any, any>): string {
     // See https://stackoverflow.com/a/53593328
     const allKeys: string[] = [];
     // Get all keys (worse performance than Object.keys, but in contrast works recursively + is reliable)

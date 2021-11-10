@@ -8,7 +8,8 @@
         "build": "ng build ngx-show-more && ng build ngx-track-by-property && ng build ngx-utility-libraries-demo",
         "watch-ngx-show-more": "ng build ngx-show-more --watch --configuration development",
         "watch-ngx-track-by-property": "ng build ngx-track-by-property --watch --configuration development",
-        "test": "ng test",
+        "test-ngx-show-more": "ng test ngx-show-more",
+        "test-ngx-track-by-property": "ng test ngx-track-by-property",
         "prettier": "prettier --ignore-path .gitignore --loglevel warn --write \"./**/*.{ts,json,js,yml,css,sccs,html,angular}\""
     },
     "private": true,
