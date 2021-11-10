@@ -15,7 +15,7 @@ export class NgxTrackByPropertyPipe implements PipeTransform {
      * `null`: the item itself is unique (all items are a primitive type, or the object references are the identifier)
      * `string`: the key of one property that identifies the unique id (put a `.` between properties e.g. `'user.id'`)
      * `string[]`: the keys of all properties whose combined values are unique (e.g. `['user.firstName', 'user.lastName']`)
-     * `'$objectToKey'`: the stringified item (the items should be (small) json-like-values (no functions), and there is no unique id one could use instead)
+     * `'$objectToKey'`: the stringified item (the items should be (small) json-like-values (no functions), and there is no unique id one could use instead), basically identifies the object by value
      * @returns a trackBy function that plucks the given properties from the ngFor item
      */
     public transform(
@@ -28,7 +28,7 @@ export class NgxTrackByPropertyPipe implements PipeTransform {
             return (index: number, item: any) => item;
         }
         if (propertyNames === '$objectToKey') {
-            (index: number, item: any) => objectToHash(item);
+            return (index: number, item: any) => objectToHash(item);
         }
         if (Array.isArray(propertyNames)) {
             // propertyNames is something like: ['user.firstName', 'user.lastName']
