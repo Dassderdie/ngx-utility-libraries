@@ -95,7 +95,10 @@ describe('NgxTrackByPropertyPipe', () => {
     });
 
     it('should return a function that tracks by multiple paths', () => {
-        const compareFn = pipe.transform(['name', 'surname']);
+        const compareFn = pipe.transform(
+            ['name', 'surname'],
+            [] as { id: number; name: string; surname: string }[]
+        );
         expect(compareFn(1, { id: 1, name: 'John', surname: 'Smith' })).toEqual(
             compareFn(3, { id: 2, name: 'John', surname: 'Smith' })
         );
@@ -105,5 +108,47 @@ describe('NgxTrackByPropertyPipe', () => {
         expect(
             compareFn(1, { id: 1, name: 'John', surname: 'SmIth' })
         ).not.toEqual(compareFn(3, { id: 2, name: 'John', surname: 'Smith' }));
+    });
+
+    it('should provide typesafety for the parameters', () => {
+        pipe.transform('a.b.c');
+        pipe.transform('$value', [] as number[]);
+        pipe.transform('$value', [] as (number | string)[]);
+        pipe.transform('$index', [] as (number | string)[]);
+        pipe.transform(
+            ['name', 'surname'],
+            [] as { id: number; name: string; surname: string }[]
+        );
+        pipe.transform(
+            'name',
+            [] as { id: number; name: string; surname: string }[]
+        );
+        pipe.transform(
+            'user.name',
+            [] as { user: { id: number; name: string; surname: string } }[]
+        );
+        pipe.transform(
+            ['user.name', 'user.surname'],
+            [] as { user: { id: number; name: string; surname: string } }[]
+        );
+
+        // @ts-expect-error
+        pipe.transform('$ndex', [] as (number | string)[]);
+        // @ts-expect-error
+        pipe.transform(['$index'], [] as (number | string)[]);
+        // @ts-expect-error
+        pipe.transform(['$value'], [] as (number | string)[]);
+        // @ts-expect-error
+        pipe.transform(['property'], [] as (number | string)[]);
+        pipe.transform(
+            // @ts-expect-error
+            'u',
+            [] as { user: { id: number; name: string; surname: string } }[]
+        );
+        pipe.transform(
+            // @ts-expect-error
+            ['name', 'n'],
+            [] as { id: number; name: string; surname: string }[]
+        );
     });
 });

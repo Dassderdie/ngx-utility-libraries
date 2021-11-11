@@ -17,9 +17,20 @@ export class NgxTrackByPropertyPipe implements PipeTransform {
      * `string[]`: the keys of all properties whose combined values are unique (e.g. `['user.firstName', 'user.lastName']`)
      * @returns a trackBy function that plucks the given properties from the ngFor item
      */
-    public transform(
-        propertyNames: string[] | string | '$index' | '$value'
-    ): TrackByFunction<unknown> {
+    public transform<
+        Items extends any[] = any[],
+        Item = Items[0],
+        FirstLevelPropertyName extends string | number = keyof Item &
+            (string | number),
+        Path extends string | number =
+            | FirstLevelPropertyName
+            | `${FirstLevelPropertyName}.${string}`,
+        P extends Path = Path
+    >(
+        propertyNames: P[] | P | '$index' | '$value',
+        // only to get the type for Items, because angular pipes don't support passing types as generic parameters
+        items?: Items
+    ): TrackByFunction<Item> {
         if (propertyNames === '$index') {
             return (index: number, item: any) => index;
         }
@@ -35,11 +46,11 @@ export class NgxTrackByPropertyPipe implements PipeTransform {
             // propertyNames is something like: ['user.firstName', 'user.lastName']
             return (index: number, item: any) =>
                 propertyNames
-                    .map((propertyName) => get(item, propertyName))
+                    .map((propertyName) => get(item, propertyName as any))
                     .join(',');
         }
         // propertyNames is something like: 'user.id'
-        return (index: number, item: any) => get(item, propertyNames);
+        return (index: number, item: any) => get(item, propertyNames as any);
     }
 }
 
