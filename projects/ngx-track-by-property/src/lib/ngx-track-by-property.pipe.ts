@@ -12,23 +12,24 @@ export class NgxTrackByPropertyPipe implements PipeTransform {
     /**
      * @param propertyNames the key(s) which make an unique identifier for the item in the ngFor loop
      * `'$index'`: the position of the item (assumes the positions of the items in the array are stable during change-detection)
-     * `null`: the item itself is unique (all items are a primitive type, or the object references are the identifier)
+     * `'$value'`: the item itself is unique (if the item is an object, the objects value is compared instead of the reference)
      * `string`: the key of one property that identifies the unique id (put a `.` between properties e.g. `'user.id'`)
      * `string[]`: the keys of all properties whose combined values are unique (e.g. `['user.firstName', 'user.lastName']`)
-     * `'$objectToKey'`: the stringified item (the items should be (small) json-like-values (no functions), and there is no unique id one could use instead), basically identifies the object by value
      * @returns a trackBy function that plucks the given properties from the ngFor item
      */
     public transform(
-        propertyNames: string[] | string | '$index' | '$objectToKey' | null
+        propertyNames: string[] | string | '$index' | '$value'
     ): TrackByFunction<unknown> {
         if (propertyNames === '$index') {
             return (index: number, item: any) => index;
         }
-        if (propertyNames === null) {
-            return (index: number, item: any) => item;
-        }
-        if (propertyNames === '$objectToKey') {
-            return (index: number, item: any) => objectToHash(item);
+        if (propertyNames === '$value') {
+            return (index: number, item: any) =>
+                typeof item === 'object'
+                    ? item === null
+                        ? null
+                        : objectToHash(item)
+                    : item;
         }
         if (Array.isArray(propertyNames)) {
             // propertyNames is something like: ['user.firstName', 'user.lastName']
