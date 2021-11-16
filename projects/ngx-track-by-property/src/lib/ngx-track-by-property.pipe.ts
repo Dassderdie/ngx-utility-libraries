@@ -7,6 +7,16 @@ import { get } from 'lodash-es';
 })
 /**
  * An Angular pipe that makes it more convenient to use the [trackByFunction](https://angular.io/api/common/NgForOf#ngForTrackBy) to improve performance of the `*ngFor` structural directive.
+ *
+ * Use it like this:
+ * @example
+ * ````
+ *  <div *ngFor="
+ *      let item of items;
+ *      trackBy: '$index' | ngxTrackByProperty: items
+ *  ">
+ *  </div>
+ * ````
  */
 export class NgxTrackByPropertyPipe implements PipeTransform {
     /**
@@ -31,6 +41,8 @@ export class NgxTrackByPropertyPipe implements PipeTransform {
         // only to get the type for Items, because angular pipes don't support passing types as generic parameters
         items?: Items
     ): TrackByFunction<Item> {
+        // The transform function is in general called once per `trackBy:` (https://stackoverflow.com/questions/66365244/in-angular-ivy-why-pure-pipe-instance-is-not-cached-between-usages-like-in-view)
+        // The here returned TrackByFunction could be called once per changeDetection cycle for each item in the ngFor loop -> should be very fast
         if (propertyNames === '$index') {
             return (index: number, item: any) => index;
         }
@@ -49,9 +61,12 @@ export class NgxTrackByPropertyPipe implements PipeTransform {
                     .map((propertyName) => get(item, propertyName as any))
                     .join(',');
         }
+        // performance improvement
+        if (typeof propertyNames === 'number' || !propertyNames.includes('.')) {
+            // propertyNames is something like 'user' or 1
+            return (index: number, item: any) => item[propertyNames];
+        }
         // propertyNames is something like: 'user.id'
         return (index: number, item: any) => get(item, propertyNames as any);
     }
 }
-
-// https://stackoverflow.com/questions/66365244/in-angular-ivy-why-pure-pipe-instance-is-not-cached-between-usages-like-in-view

@@ -3,10 +3,15 @@ import { hashString } from './hash-string';
 describe('hashString', () => {
     it('should create the same hash for the same input', () => {
         expect(hashString('a')).toBe(hashString('a'));
+        expect(hashString('')).toBe(hashString(''));
+        expect(hashString('ab'.repeat(100))).toBe(hashString('ab'.repeat(100)));
     });
 
     it('should create a different hash for a different input', () => {
         expect(hashString('a')).not.toBe(hashString('b'));
+        expect(hashString('a'.repeat(1000))).not.toBe(
+            hashString('a'.repeat(999) + 'b')
+        );
     });
 
     it('should reduce the length of very long inputs', () => {
