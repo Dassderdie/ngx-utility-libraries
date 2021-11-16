@@ -50,6 +50,8 @@ Install ngx-track-by-property from npm:
 npm install ngx-track-by-property --save
 ```
 
+Include [lodash-es](https://www.npmjs.com/package/lodash-es) in your `package.json`. This package makes only use of its [get](https://lodash.com/docs/4.17.15#get) method.
+
 Add to your NgModule imports:
 
 ```ts
