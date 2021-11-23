@@ -4,6 +4,8 @@ A collection of libraries for Angular projects.
 
 1. [ngx-show-more](projects/ngx-show-more/README.md)
    An Angular component that truncates arbitrary provided content if it is too high, but enables the user to expand it completely.
+2. [ngx-track-by-property](projects/ngx-track-by-property/README.md)
+   An Angular pipe that makes it more convenient to use common [trackByFunctions](https://angular.io/api/common/NgForOf#ngForTrackBy) to improve performance of the `*ngFor` structural directive.
 
 ## Structure
 
